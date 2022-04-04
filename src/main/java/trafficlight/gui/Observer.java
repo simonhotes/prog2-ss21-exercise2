@@ -1,4 +1,4 @@
-package trafficlight;
+package trafficlight.gui;
 
 import trafficlight.states.State;
 
