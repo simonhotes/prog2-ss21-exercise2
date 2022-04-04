@@ -19,12 +19,22 @@ public class TrafficLightCtrl {
 
     private boolean doRun = true;
 
-    public TrafficLightCtrl() {
+    private static TrafficLightCtrl trafficLightCtrl;
+
+    private TrafficLightCtrl() {
         super();
         initStates();
         gui = new TrafficLightGui(this);
         gui.setVisible(true);
         //TODO useful to update the current state
+        currentState.notifyObserver();
+    }
+
+    public static TrafficLightCtrl getInstance() {
+        if(trafficLightCtrl == null){
+            trafficLightCtrl = new TrafficLightCtrl();
+        }
+        return trafficLightCtrl;
     }
 
     private void initStates() {
@@ -33,6 +43,8 @@ public class TrafficLightCtrl {
             public State getNextState() {
                 previousState = currentState;
                 //TODO useful to update the current state and the old one
+                currentState.notifyObserver();
+                yellowState.notifyObserver();
                 return yellowState;
             }
             @Override
@@ -46,6 +58,8 @@ public class TrafficLightCtrl {
             public State getNextState() {
                 previousState = currentState;
                 //TODO useful to update the current state and the old one
+                currentState.notifyObserver();
+                yellowState.notifyObserver();
                 return yellowState;
             }
             @Override
@@ -60,10 +74,14 @@ public class TrafficLightCtrl {
                 if (previousState.equals(greenState)) {
                     previousState = currentState;
                     //TODO useful to update the current state and the old one
+                    currentState.notifyObserver();
+                    redState.notifyObserver();
                     return redState;
                 }else {
                     previousState = currentState;
                     //TODO useful to update the current state and the old one
+                    currentState.notifyObserver();
+                    greenState.notifyObserver();
                     return greenState;
                 }
             }
